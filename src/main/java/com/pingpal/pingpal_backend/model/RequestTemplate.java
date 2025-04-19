@@ -10,6 +10,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Entity
 public class RequestTemplate {
 
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -31,8 +33,6 @@ public class RequestTemplate {
     private Map<String, String> headers = new HashMap<>();
 
     // -- Authentication --
-    private String authType;
-
     @Transient
     private Map<String, String> authData;
 
@@ -41,29 +41,42 @@ public class RequestTemplate {
     private String authDataJson;
 
     @PostLoad
-    private void loadAuthData() {
+    private void loadData() {
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            this.authData = mapper.readValue(this.authDataJson, new TypeReference<>() {});
+            this.authData = OBJECT_MAPPER.readValue(this.authDataJson, new TypeReference<>() {});
         } catch (Exception e) {
             this.authData = new HashMap<>();
+        }
+
+        try {
+            this.body = OBJECT_MAPPER.readValue(this.bodyJson, new TypeReference<>() {});
+        } catch (Exception e) {
+            this.body = new HashMap<>();
         }
     }
 
     @PrePersist
     @PreUpdate
-    private void storeAuthData() {
+    private void storeData() {
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            this.authDataJson = mapper.writeValueAsString(this.authData);
+            this.authDataJson = OBJECT_MAPPER.writeValueAsString(this.authData);
         } catch (Exception e) {
             this.authDataJson = "{}";
+        }
+
+        try {
+            this.bodyJson = OBJECT_MAPPER.writeValueAsString(this.body);
+        } catch (Exception e) {
+            this.bodyJson = "{}";
         }
     }
 
     // -- Request Body --
+    @Transient
+    private Map<String, String> body;
+
     @Column(columnDefinition = "TEXT")
-    private String body;
+    private String bodyJson;
 
     // Constructors
     public RequestTemplate() {}
@@ -86,12 +99,9 @@ public class RequestTemplate {
     public Map<String, String> getHeaders() { return headers; }
     public void setHeaders(Map<String, String> headers) { this.headers = headers; }
 
-    public String getAuthType() { return authType; }
-    public void setAuthType(String authType) { this.authType = authType; }
-
     public Map<String, String> getAuthData() { return authData; }
     public void setAuthData(Map<String, String> authData) { this.authData = authData; }
 
-    public String getBody() { return body; }
-    public void setBody(String body) { this.body = body; }
+    public Map<String, String> getBody() { return body; }
+    public void setBody(Map<String, String> body) { this.body = body; }
 }

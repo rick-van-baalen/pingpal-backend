@@ -41,7 +41,6 @@ public class RequestTemplateController {
             existing.setUrl(updatedRequest.getUrl());
             existing.setParams(updatedRequest.getParams());
             existing.setHeaders(updatedRequest.getHeaders());
-            existing.setAuthType(updatedRequest.getAuthType());
             existing.setAuthData(updatedRequest.getAuthData());
             existing.setBody(updatedRequest.getBody());
             return ResponseEntity.ok(requestRepo.save(existing));
