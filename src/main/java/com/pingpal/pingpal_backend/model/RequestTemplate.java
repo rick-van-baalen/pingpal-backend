@@ -3,7 +3,6 @@ package com.pingpal.pingpal_backend.model;
 import jakarta.persistence.*;
 import java.util.*;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -66,12 +65,6 @@ public class RequestTemplate {
     @Column(columnDefinition = "TEXT")
     private String body;
 
-    // -- Relationship --
-    @ManyToOne
-    @JoinColumn(name = "collection_id")
-    @JsonBackReference
-    private Collection collection;
-
     // Constructors
     public RequestTemplate() {}
 
@@ -101,7 +94,4 @@ public class RequestTemplate {
 
     public String getBody() { return body; }
     public void setBody(String body) { this.body = body; }
-
-    public Collection getCollection() { return collection; }
-    public void setCollection(Collection collection) { this.collection = collection; }
 }

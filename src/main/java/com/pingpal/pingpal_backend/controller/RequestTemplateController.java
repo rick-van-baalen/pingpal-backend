@@ -1,13 +1,10 @@
 package com.pingpal.pingpal_backend.controller;
 
 import com.pingpal.pingpal_backend.model.RequestTemplate;
-import com.pingpal.pingpal_backend.repository.CollectionRepository;
 import com.pingpal.pingpal_backend.repository.RequestTemplateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import com.pingpal.pingpal_backend.model.Collection;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,19 +16,13 @@ public class RequestTemplateController {
     @Autowired
     private RequestTemplateRepository requestRepo;
 
-    @Autowired
-    private CollectionRepository collectionRepo;
-
     @GetMapping
     public List<RequestTemplate> getAll() {
         return requestRepo.findAll();
     }
 
-    @PostMapping("/{collectionId}")
-    public RequestTemplate create(@PathVariable UUID collectionId, @RequestBody RequestTemplate template) {
-        var collection = collectionRepo.findById(collectionId)
-                .orElseThrow(() -> new RuntimeException("Collection not found"));
-        template.setCollection(collection);
+    @PostMapping
+    public RequestTemplate create(@RequestBody RequestTemplate template) {
         return requestRepo.save(template);
     }
 
@@ -63,7 +54,7 @@ public class RequestTemplateController {
             requestRepo.deleteById(id);
             return ResponseEntity.noContent().build(); // 204 No Content
         } else {
-            return ResponseEntity.notFound().build(); // 404 if not found
+            return ResponseEntity.notFound().build(); // 404 Not found
         }
     }
     
