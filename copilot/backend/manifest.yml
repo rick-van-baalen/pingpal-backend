@@ -35,9 +35,9 @@ network:
 #
 
 variables:
-  SPRING_DATASOURCE_URL: 
-  SPRING_DATASOURCE_USERNAME: 
-  SPRING_DATASOURCE_PASSWORD: 
+  SPRING_DATASOURCE_URL: jdbc:postgresql://pingpal-test.cp60k8cc8wvh.eu-west-1.rds.amazonaws.com:5432/pingpal-test
+  SPRING_DATASOURCE_USERNAME: postgres
+  SPRING_DATASOURCE_PASSWORD: J7Qy1kmILJ1HXjQ8JY1h
 
 #  LOG_LEVEL: info
 
