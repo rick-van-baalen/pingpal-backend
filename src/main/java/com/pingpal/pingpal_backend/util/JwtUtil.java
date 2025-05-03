@@ -59,4 +59,12 @@ public class JwtUtil {
         return jwtParser.parseSignedClaims(token);
     }
 
+    public void setSecretForTest(String secret) {
+        this.secret = secret;
+    }
+    
+    public void setExpirationMsForTest(long expirationMs) {
+        this.expirationMs = expirationMs;
+    }
+
 }
