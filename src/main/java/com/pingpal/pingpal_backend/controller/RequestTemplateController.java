@@ -5,6 +5,8 @@ import com.pingpal.pingpal_backend.dto.RequestTemplateUpdateDto;
 import com.pingpal.pingpal_backend.model.RequestTemplate;
 import com.pingpal.pingpal_backend.repository.RequestTemplateRepository;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+@Tag(name = "Requests")
 @RestController
 @RequestMapping("/requests")
 public class RequestTemplateController {
@@ -23,11 +26,13 @@ public class RequestTemplateController {
     private RequestTemplateRepository requestRepo;
 
     @GetMapping
+    @Operation(summary = "Get all requests")
     public List<RequestTemplate> getAll() {
         return requestRepo.findAll();
     }
 
     @PostMapping
+    @Operation(summary = "Create a new request")
     public ResponseEntity<?> create(@Valid @RequestBody RequestTemplateCreateDto dto) {
         RequestTemplate template = new RequestTemplate();
         template.setName(dto.getName());
@@ -43,6 +48,7 @@ public class RequestTemplateController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get one request")
     public ResponseEntity<RequestTemplate> getOne(@PathVariable UUID id) {
         return requestRepo.findById(id)
                 .map(ResponseEntity::ok)
@@ -50,6 +56,7 @@ public class RequestTemplateController {
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Update an existing request")
     public ResponseEntity<RequestTemplate> update(
             @PathVariable UUID id,
             @RequestBody RequestTemplateUpdateDto dto) {
@@ -81,6 +88,7 @@ public class RequestTemplateController {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete a request")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         if (requestRepo.existsById(id)) {
             requestRepo.deleteById(id);
