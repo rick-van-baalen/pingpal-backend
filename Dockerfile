@@ -1,4 +1,5 @@
 FROM eclipse-temurin:24-jdk-alpine
+ENV SPRING_PROFILES_ACTIVE=prod
 WORKDIR /app
 COPY target/pingpal-backend-*.jar app.jar
 EXPOSE 9090
